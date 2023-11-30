@@ -102,6 +102,30 @@ namespace ompl
                 return maxDistance_;
             }
 
+            /** \brief Use rope shortcutting after a path is found. */
+            void setRopeShortcutting(bool ropeShortcutting)
+            {
+                useRopeShortcut_ = ropeShortcutting;
+            }
+
+            /** \brief Get the state of the rope shortcutting option */
+            bool getRopeShortcutting() const
+            {
+                return useRopeShortcut_;
+            }
+
+            /** \brief Set the step size of the rope shortcutting. This parameter is 1.0 by default. */
+            void setRopeShortcutStepSize(double ropeShortcutStepSize)
+            {
+                ropeShortcutStepSize_ = ropeShortcutStepSize;
+            }
+
+            /** \brief Get the step size of the rope shortcutting. */
+            double getRopeShortcutStepSize() const
+            {
+                return ropeShortcutStepSize_;
+            }
+
             /** \brief Set a different nearest neighbors datastructure */
             template <template <typename T> class NN>
             void setNearestNeighbors()
@@ -188,6 +212,12 @@ namespace ompl
 
             /** \brief The random number generator */
             RNG rng_;
+
+            /** \brief Option to use Rope shortcut */
+            bool useRopeShortcut_{false};
+
+            /** \brief Rope shortcutting step size */
+            double ropeShortcutStepSize_{1.0};
 
             /** \brief The pair of states in each tree connected during planning.  Used for PlannerData computation */
             std::pair<base::State *, base::State *> connectionPoint_;

@@ -38,6 +38,7 @@
 #include "ompl/base/goals/GoalSampleableRegion.h"
 #include "ompl/tools/config/SelfConfig.h"
 #include "ompl/util/String.h"
+#include "ompl/geometric/PathSimplifier.h"
 
 ompl::geometric::RRTConnect::RRTConnect(const base::SpaceInformationPtr &si, bool addIntermediateStates)
   : base::Planner(si, addIntermediateStates ? "RRTConnectIntermediate" : "RRTConnect")
@@ -339,7 +340,13 @@ ompl::base::PlannerStatus ompl::geometric::RRTConnect::solve(const base::Planner
                     path->append(mpath1[i]->state);
                 for (auto &i : mpath2)
                     path->append(i->state);
-
+                if (useRopeShortcut_)
+                {
+                    OMPL_INFORM("Using rope shortcutting");
+                    PathSimplifier ps(si_);
+                    ps.ropeShortcutPath(*path, ropeShortcutStepSize_);
+                }
+                
                 pdef_->addSolutionPath(path, false, 0.0, getName());
                 solved = true;
                 break;
